@@ -3,6 +3,8 @@
     <mat-toolbar-row>
       <img style="padding-right: 10px;" src="assets/images/coronavirus.svg" width="36" alt="">
       <span>Covid-19 no Brasil</span>
+      <img style="padding-left: 30px;" src="assets/images/relogio.svg" width="24" alt="">
+      <span style="padding-left: 5px;font-size: 12px;">{{dataAtualizacao | date: 'dd/MM/yyyy HH:mm'}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
   <router-outlet></router-outlet>

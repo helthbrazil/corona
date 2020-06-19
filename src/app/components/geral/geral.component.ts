@@ -105,7 +105,6 @@ export class GeralComponent implements OnInit {
   }
 
   formatarValor(valorString: string) {
-    debugger
     const aux = valorString.split(',').join('');
     return parseInt(aux);
   }

@@ -1,0 +1,54 @@
+<mat-card class="mat-elevation-z8" style="margin: 20px; top: 20px">
+    <div *ngIf="mostrarLoading">
+        <mat-progress-bar *ngIf="mostrarLoading" mode="indeterminate"></mat-progress-bar>
+    </div>
+    <div *ngIf="!mostrarLoading" class="example-container">
+
+        <table mat-table [dataSource]="dataSource">
+    
+            <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+    
+            <!-- Position Column -->
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let element">
+                    <img style="padding-right: 10px;" src="{{element.flag}}" width="30" alt="">
+                    {{element.uf}} </td>
+                    <td mat-footer-cell *matFooterCellDef> Total </td>
+            </ng-container>
+    
+            <!-- Name Column -->
+            <ng-container matColumnDef="casos">
+                <th class="center" mat-header-cell *matHeaderCellDef> Casos </th>
+                <td class="center" mat-cell *matCellDef="let element"> {{element.cases}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('cases')}} </td>
+            </ng-container>
+    
+            <!-- Weight Column -->
+            <ng-container matColumnDef="mortes">
+                <th class="center" mat-header-cell *matHeaderCellDef> Mortes </th>
+                <td class="center" mat-cell *matCellDef="let element"> {{element.deaths}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('deaths')}} </td>
+            </ng-container>
+    
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="recuperados">
+                <th class="center" mat-header-cell *matHeaderCellDef> Recuperados </th>
+                <td class="center" mat-cell *matCellDef="let element"> {{element.refuses}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('refuses')}} </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="atualizacao">
+                <th class="center" mat-header-cell *matHeaderCellDef> Data Atualização </th>
+                <td class="center"  mat-cell *matCellDef="let element"> {{element.datetime | date: 'dd/MM/yyyy HH:mm:ss'}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef>-</td>
+            </ng-container>
+          
+    
+            <tr style="background-color: #e4e4e4;" class="mat-elevation-z8" mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr style="background-color: #f2f2f2;" mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+        </table>
+    </div>
+</mat-card>

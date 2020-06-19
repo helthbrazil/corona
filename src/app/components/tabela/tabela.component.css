@@ -1,0 +1,12 @@
+table {
+    width: 100%;
+  }
+
+  .example-container {
+    height: 450px;
+    overflow: auto;
+  }
+
+  .center {
+    text-align: center;
+  }

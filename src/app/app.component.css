@@ -1,0 +1,13 @@
+.mat-white {
+    color: #fff;
+}
+
+.menu-lateral{
+    position: fixed;
+    z-index: 9999;
+    top: 64px;
+    left: 0px;
+    width: 30px;
+    height: 100vh;
+    background-color: red;
+}

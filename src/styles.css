@@ -2,3 +2,11 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.toolbar {
+    position: fixed; top: 0px;
+    z-index: 99999;
+}
+
+.page-content {
+    margin-top: 64px;
+}

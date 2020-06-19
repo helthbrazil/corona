@@ -12,7 +12,7 @@ export class TabelaComponent implements OnInit {
 
   constructor(private dadosService: DadosService) { }
 
-  displayedColumns: string[] = ['estado', 'casos', 'mortes', 'recuperados', 'atualizacao'];
+  displayedColumns: string[] = ['estado', 'casos', 'mortes', 'recuperados'];
   dataSource: Array<Estado>;
 
   ngOnInit(): void {

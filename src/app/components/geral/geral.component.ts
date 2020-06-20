@@ -129,7 +129,7 @@ export class GeralComponent implements OnInit {
       for (let i = 0; i < estados.length; i++) {
         const uf = estados[i]['name'];
         let visivel = false;
-        if(uf === 'MG' | uf === 'SP' | uf === 'RJ'){
+        if(uf === 'MG' || uf === 'SP' || uf === 'RJ'){
           visivel = true;
         }
         if (i === estados.length - 1) {

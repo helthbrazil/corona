@@ -1,4 +1,5 @@
 <mat-card class="mat-elevation-z8" style="margin: 20px; top: 20px">
     <mat-progress-bar *ngIf="mostrarLoading" mode="indeterminate"></mat-progress-bar>
-    <div *ngIf="!mostrarLoading" [chart]="chart"></div>
+    <div  [chart]="chart"></div>
+    <div  [chart]="chartCrescimento"></div>
 </mat-card>

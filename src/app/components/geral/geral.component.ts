@@ -4,6 +4,8 @@ import { DadosService } from 'src/app/shared/services/dados.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Pais } from 'src/app/shared/models/pais';
 import { Estado } from 'src/app/shared/models/estado';
+import * as moment from 'moment';
+import { Observable, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-geral',
@@ -12,9 +14,39 @@ import { Estado } from 'src/app/shared/models/estado';
 })
 export class GeralComponent implements OnInit {
 
+  dataInicial = '20200317';
   mostrarLoading = false;
   dados: Array<Pais>;
   registros: Array<Estado>;
+
+  chartCrescimento = new Chart({
+
+    chart: {
+      type: 'line',
+      zoomType: "xy",
+      animation: false
+    },
+    exporting: {
+      enabled: false
+    },
+    title: {
+      text: 'Crescimento período'
+    },
+    tooltip: {
+      pointFormat: '{point.y}'
+    },
+    accessibility: {
+      point: {
+        valueDescriptionFormat: '%'
+      }
+    },
+    xAxis: {
+      categories: this.formatarCategoria(this.getDates(this.dataInicial))
+    },
+    credits: {
+      enabled: false
+    }
+  });
 
   chart = new Chart({
 
@@ -59,6 +91,66 @@ export class GeralComponent implements OnInit {
   constructor(private dadosService: DadosService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    const dias = this.getDates(this.dataInicial);
+    const arrayObservable = new Array<Observable<any>>();
+
+    dias.forEach(dia => {
+      arrayObservable.push(this.dadosService.buscarDadosPorData(dia));
+    });
+
+    forkJoin(arrayObservable).subscribe(res => {
+      const dados = new Array<any>();
+      res.forEach(item => {
+        dados.push(item['data']);
+      });
+
+      const estados = new Array<any>();
+      dados[0].forEach(element => {
+        if (!estados.some(item => item['name'] === element['uf'])) {
+          estados.push({ name: element['uf'], data: [] });
+        }
+      });
+
+      estados.forEach(objEstado => {
+        dados.forEach(dado => {
+          const dadosEstado = dado.filter(item => item['uf'] === objEstado['name']);
+          if (dadosEstado.length > 0) {
+            objEstado['data'].push(dadosEstado[0]['deaths']);
+          } else {
+            objEstado['data'].push(objEstado['data'][objEstado['data'].length - 1]);
+          }
+          console.log(dadosEstado);
+        });
+      });
+
+      debugger
+      console.log(estados);
+
+      for (let i = 0; i < estados.length; i++) {
+        const uf = estados[i]['name'];
+        let visivel = false;
+        if(uf === 'MG' | uf === 'SP' | uf === 'RJ'){
+          visivel = true;
+        }
+        if (i === estados.length - 1) {
+          this.chartCrescimento.addSeries({
+            name: estados[i]['name'],
+            data: estados[i]['data'],
+            visible: visivel,
+            type: "line"
+          }, true, false);
+        } else {
+          this.chartCrescimento.addSeries({
+            name: estados[i]['name'],
+            data: estados[i]['data'],
+            visible: visivel,
+            type: "line"
+          }, false, false);
+        }
+      }
+    });
+
+    debugger
     this.mostrarLoading = true;
 
     setTimeout(() => {
@@ -102,6 +194,29 @@ export class GeralComponent implements OnInit {
         this.mostrarLoading = false;
       });
     }, 300);
+  }
+
+  getDates(startDate, stopDate?) {
+    var dateArray = [];
+    var currentDate = moment(startDate);
+    if (!stopDate) {
+      stopDate = moment(stopDate);
+    }
+    while (currentDate <= stopDate) {
+      dateArray.push(moment(currentDate).format('YYYYMMDD'))
+      currentDate = moment(currentDate).add(1, 'days');
+    }
+    return dateArray;
+  }
+
+  formatarCategoria(dateArray: Array<string>) {
+    const dates = new Array<string>();
+    dateArray.forEach((item: string) => {
+      const data = `${item.substring(6, 8)}/${item.substring(4, 6)}/${item.substring(0, 4)}`;
+      dates.push(data);
+    });
+
+    return dates;
   }
 
   formatarValor(valorString: string) {

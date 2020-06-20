@@ -29,8 +29,15 @@ export class GeralComponent implements OnInit {
     exporting: {
       enabled: false
     },
+    legend: {
+      itemMarginBottom: 15,
+      shadow: false,
+      title: {
+        text: 'Estados'
+      }
+    },
     title: {
-      text: 'Crescimento período'
+      text: 'Curva de mortes'
     },
     tooltip: {
       pointFormat: '{point.y}'
@@ -42,6 +49,11 @@ export class GeralComponent implements OnInit {
     },
     xAxis: {
       categories: this.formatarCategoria(this.getDates(this.dataInicial))
+    },
+    yAxis: {
+      title:{
+        text:  'Mortes'
+      }
     },
     credits: {
       enabled: false

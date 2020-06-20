@@ -23,18 +23,15 @@ export class GeralComponent implements OnInit {
 
     chart: {
       type: 'line',
-      zoomType: "xy",
-      animation: false
+      zoomType: "x",
+      animation: true
     },
     exporting: {
       enabled: false
     },
     legend: {
-      itemMarginBottom: 15,
-      shadow: false,
-      title: {
-        text: 'Estados'
-      }
+      itemMarginBottom: 5,
+      shadow: false     
     },
     title: {
       text: 'Curva de mortes'

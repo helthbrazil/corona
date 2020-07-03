@@ -132,7 +132,6 @@ export class GeralComponent implements OnInit {
         });
       });
 
-      debugger
       console.log(estados);
 
       for (let i = 0; i < estados.length; i++) {
@@ -159,7 +158,6 @@ export class GeralComponent implements OnInit {
       }
     });
 
-    debugger
     this.mostrarLoading = true;
 
     setTimeout(() => {

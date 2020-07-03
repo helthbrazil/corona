@@ -9,13 +9,19 @@ import { Estado } from 'src/app/shared/models/estado';
 })
 export class TabelaComponent implements OnInit {
   mostrarLoading = true;
+  mostrarSuspeitos = false;
 
   constructor(private dadosService: DadosService) { }
 
-  displayedColumns: string[] = ['estado', 'casos', 'mortes', 'recuperados'];
+  displayedColumns: string[] = ['estado', 'casos', 'mortes'];
   dataSource: Array<Estado>;
 
   ngOnInit(): void {
+    if (window.screen.width >= 500) { // 768px portrait
+      this.mostrarSuspeitos = true;
+      this.displayedColumns.push('suspeitos');
+    }
+
     this.dadosService.buscarDadosBrasil().subscribe(res => {
       this.dataSource = new Array<Estado>();
       const dados = res['data'];
@@ -23,6 +29,7 @@ export class TabelaComponent implements OnInit {
         const estado = new Estado();
         estado['deaths'] = data['deaths'];
         estado['datetime'] = data['datetime'];
+        estado['suspects'] = data['suspects'];
         estado['cases'] = data['cases'];
         estado['uf'] = data['uf'];
         estado['refuses'] = data['refuses'];

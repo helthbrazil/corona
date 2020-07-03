@@ -33,10 +33,10 @@
             </ng-container>
     
             <!-- Symbol Column -->
-            <ng-container matColumnDef="recuperados">
-                <th class="center" mat-header-cell *matHeaderCellDef> Recuperados </th>
-                <td class="center" mat-cell *matCellDef="let element"> {{element.refuses}} </td>
-                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('refuses')}} </td>
+            <ng-container *ngIf="mostrarSuspeitos" matColumnDef="suspeitos">
+                <th class="center" mat-header-cell *matHeaderCellDef> Suspeitos </th>
+                <td class="center" mat-cell *matCellDef="let element"> {{element.suspects}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('suspects')}} </td>
             </ng-container>
                       
     

@@ -3,12 +3,16 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "heroku-postbuild": "ng build --prod --build-optimizer --aot",
     "start": "node server.js",
-    "postinstall": "ng build --prod --build-optimizer",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
+  },
+  "engines": {
+    "node": "12.16.1",
+    "npm": "6.13.4"
   },
   "private": true,
   "dependencies": {

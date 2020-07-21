@@ -31,12 +31,12 @@
                 <td class="center" mat-cell *matCellDef="let element"> {{element.deaths}} </td>
                 <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('deaths')}} </td>
             </ng-container>
-    
-            <!-- Symbol Column -->
-            <ng-container *ngIf="mostrarSuspeitos" matColumnDef="suspeitos">
-                <th class="center" mat-header-cell *matHeaderCellDef> Suspeitos </th>
-                <td class="center" mat-cell *matCellDef="let element"> {{element.suspects}} </td>
-                <td class="center" mat-footer-cell *matFooterCellDef> {{getTotal('suspects')}} </td>
+            
+             <!-- Symbol Column -->
+             <ng-container matColumnDef="taxaDeMortes">
+                <th class="center" mat-header-cell *matHeaderCellDef> Taxa mortes </th>
+                <td class="center" mat-cell *matCellDef="let element"> {{(element.deaths / element.cases * 100).toFixed(1) + ' %'}} </td>
+                <td class="center" mat-footer-cell *matFooterCellDef> {{calcularTaxaMortes() + ' %'}} </td>
             </ng-container>
                       
     

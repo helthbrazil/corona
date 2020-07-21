@@ -13,15 +13,10 @@ export class TabelaComponent implements OnInit {
 
   constructor(private dadosService: DadosService) { }
 
-  displayedColumns: string[] = ['estado', 'casos', 'mortes'];
+  displayedColumns: string[] = ['estado', 'casos', 'mortes', 'taxaDeMortes'];
   dataSource: Array<Estado>;
 
   ngOnInit(): void {
-    if (window.screen.width >= 500) { // 768px portrait
-      this.mostrarSuspeitos = true;
-      this.displayedColumns.push('suspeitos');
-    }
-
     this.dadosService.buscarDadosBrasil().subscribe(res => {
       this.dataSource = new Array<Estado>();
       const dados = res['data'];
@@ -43,6 +38,13 @@ export class TabelaComponent implements OnInit {
 
   getTotal(field: string) {
     return this.dataSource.map(t => t[field]).reduce((acc, value) => acc + value, 0);
+  }
+
+  calcularTaxaMortes(){
+    debugger
+    const mortes = this.dataSource.map(t => t['deaths']).reduce((acc, value) => acc + value, 0);
+    const casos = this.dataSource.map(t => t['cases']).reduce((acc, value) => acc + value, 0);
+    return ((mortes / casos) * 100).toFixed(1);
   }
 
 }

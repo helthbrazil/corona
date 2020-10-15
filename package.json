@@ -31,6 +31,7 @@
     "angular-highcharts": "^9.0.11",
     "express": "^4.17.1",
     "moment": "^2.27.0",
+    "ngx-animations": "^4.0.0-beta.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

@@ -12,6 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TabelaComponent } from './components/tabela/tabela.component';
 import { MenuLateralComponent } from './components/menu-lateral/menu-lateral.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { NgxAnimationsModule } from 'ngx-animations';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     MaterialModule,
     HttpClientModule,
     FlexLayoutModule,
+    NgxAnimationsModule,
     ChartModule,
     BrowserAnimationsModule
   ],

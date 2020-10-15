@@ -31,7 +31,7 @@ export class GeralComponent implements OnInit {
     },
     legend: {
       itemMarginBottom: 5,
-      shadow: false     
+      shadow: false
     },
     title: {
       text: 'Curva de mortes'
@@ -48,8 +48,46 @@ export class GeralComponent implements OnInit {
       categories: this.formatarCategoria(this.getDates(this.dataInicial))
     },
     yAxis: {
-      title:{
-        text:  'Mortes'
+      title: {
+        text: 'Mortes'
+      }
+    },
+    credits: {
+      enabled: false
+    }
+  });
+
+  chartCrescimentoBrasil = new Chart({
+
+    chart: {
+      type: 'line',
+      zoomType: "x",
+      animation: true
+    },
+    exporting: {
+      enabled: false
+    },
+    legend: {
+      itemMarginBottom: 5,
+      shadow: false
+    },
+    title: {
+      text: 'Curva de mortes Brasil'
+    },
+    tooltip: {
+      pointFormat: '{point.y}'
+    },
+    accessibility: {
+      point: {
+        valueDescriptionFormat: '%'
+      }
+    },
+    xAxis: {
+      categories: this.formatarCategoria(this.getDates(this.dataInicial))
+    },
+    yAxis: {
+      title: {
+        text: 'Mortes'
       }
     },
     credits: {
@@ -108,6 +146,9 @@ export class GeralComponent implements OnInit {
     });
 
     forkJoin(arrayObservable).subscribe(res => {
+
+      this.popularDadosGerais(res);
+
       const dados = new Array<any>();
       res.forEach(item => {
         dados.push(item['data']);
@@ -128,16 +169,16 @@ export class GeralComponent implements OnInit {
           } else {
             objEstado['data'].push(objEstado['data'][objEstado['data'].length - 1]);
           }
-          console.log(dadosEstado);
+          // console.log(dadosEstado);
         });
       });
 
-      console.log(estados);
+      // console.log(estados);
 
       for (let i = 0; i < estados.length; i++) {
         const uf = estados[i]['name'];
         let visivel = false;
-        if(uf === 'MG'){
+        if (uf === 'MG') {
           visivel = true;
         }
         if (i === estados.length - 1) {
@@ -160,47 +201,78 @@ export class GeralComponent implements OnInit {
 
     this.mostrarLoading = true;
 
-    setTimeout(() => {
-      this.dadosService.buscarDadosBrasil().subscribe(res => {
+    this.dadosService.buscarDadosBrasil().subscribe(res => {
 
-        this.registros = new Array<Estado>();
-        const registros = res['data'];
-        const dados = new Array<any>();
+      this.registros = new Array<Estado>();
+      const registros = res['data'];
+      const dados = new Array<any>();
 
-        registros.forEach(registro => {
-          const estado = new Estado();
-          estado['cases'] = registro['cases'];
-          estado['datetime'] = registro['datetime'];
-          estado['deaths'] = registro['deaths'];
-          estado['refuses'] = registro['refuses'];
-          estado['state'] = registro['state'];
-          estado['suspects'] = registro['suspects'];
-          estado['uf'] = registro['uf'];
-          estado['uid'] = registro['uid'];
-          dados.push({ name: estado['uf'], y: estado['deaths'] });
-        });
+      registros.forEach(registro => {
+        const estado = new Estado();
+        estado['cases'] = registro['cases'];
+        estado['datetime'] = registro['datetime'];
+        estado['deaths'] = registro['deaths'];
+        estado['refuses'] = registro['refuses'];
+        estado['state'] = registro['state'];
+        estado['suspects'] = registro['suspects'];
+        estado['uf'] = registro['uf'];
+        estado['uid'] = registro['uid'];
+        dados.push({ name: estado['uf'], y: estado['deaths'] });
+      });
 
+      this.chart.addSeries({
+        name: 'Mortes',
+        data: dados,
+        type: undefined
+      }, true, true);
+
+      this.registros.forEach(pais => {
         this.chart.addSeries({
-          name: 'Mortes',
-          data: dados,
-          type: undefined
+          name: pais['state'], data: [pais['deaths']],
+          type: 'column'
         }, true, true);
 
-        this.registros.forEach(pais => {
-          this.chart.addSeries({
-            name: pais['state'], data: [pais['deaths']],
-            type: 'column'
-          }, true, true);
-
-        });
-
-        console.log(this.registros);
-        this.mostrarLoading = false;
-      }, err => {
-        console.error(err);
-        this.mostrarLoading = false;
       });
-    }, 300);
+
+      console.log(this.registros);
+      this.mostrarLoading = false;
+
+    }, err => {
+      console.error(err);
+      this.mostrarLoading = false;
+    });
+  }
+
+  popularDadosGerais(res: any) {
+    const dados = new Array<any>();
+    res.forEach(item => {
+      dados.push(item['data']);
+    });
+
+    debugger
+    // console.log(dados);
+    const mortes = new Array<any>();
+    let anterior = 0;
+
+    dados.forEach(item => {
+      let sum = 0;
+      item.forEach(estado => {
+        sum += estado['deaths'];
+      });
+      if (sum !== 0) {
+        mortes.push(sum);
+      } else {
+        mortes.push(anterior);
+      }
+      anterior = mortes[mortes.length - 1];
+    });
+
+    this.chartCrescimentoBrasil.addSeries({
+      type: "line",
+      name: 'Brasil',
+      data: mortes
+    }, true, true);
+
   }
 
   getDates(startDate, stopDate?) {

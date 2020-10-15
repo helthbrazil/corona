@@ -41,7 +41,6 @@ export class TabelaComponent implements OnInit {
   }
 
   calcularTaxaMortes(){
-    debugger
     const mortes = this.dataSource.map(t => t['deaths']).reduce((acc, value) => acc + value, 0);
     const casos = this.dataSource.map(t => t['cases']).reduce((acc, value) => acc + value, 0);
     return ((mortes / casos) * 100).toFixed(1);

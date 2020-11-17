@@ -57,6 +57,44 @@ export class GeralComponent implements OnInit {
     }
   });
 
+  chartDiario = new Chart({
+
+    chart: {
+      type: 'line',
+      zoomType: "x",
+      animation: true
+    },
+    exporting: {
+      enabled: false
+    },
+    legend: {
+      itemMarginBottom: 5,
+      shadow: false
+    },
+    title: {
+      text: 'Mortes diarias Brasil'
+    },
+    tooltip: {
+      pointFormat: '{point.y}'
+    },
+    accessibility: {
+      point: {
+        valueDescriptionFormat: '%'
+      }
+    },
+    xAxis: {
+      categories: this.formatarCategoria(this.getDates(this.dataInicial))
+    },
+    yAxis: {
+      title: {
+        text: 'Mortes'
+      }
+    },
+    credits: {
+      enabled: false
+    }
+  });
+
   chartCrescimentoBrasil = new Chart({
 
     chart: {
@@ -244,14 +282,15 @@ export class GeralComponent implements OnInit {
   }
 
   popularDadosGerais(res: any) {
+    debugger
     const dados = new Array<any>();
     res.forEach(item => {
       dados.push(item['data']);
     });
 
-    debugger
     // console.log(dados);
     const mortes = new Array<any>();
+    const mortesDiaria = new Array();
     let anterior = 0;
 
     dados.forEach(item => {
@@ -266,6 +305,41 @@ export class GeralComponent implements OnInit {
       }
       anterior = mortes[mortes.length - 1];
     });
+
+    let somaAnterior = 0;
+    for (let index = 0; index < dados.length; index++) {
+      const item = dados[index];
+      if (item.length == 0) {
+        mortesDiaria.push(0);
+      } else {
+        let sum = 0;
+        item.forEach(estado => {
+          sum += estado['deaths'];
+        });
+
+        if (index === 0) {
+          mortesDiaria.push(sum);
+        } else {
+          let somaDiaria = (sum - somaAnterior);
+          if (somaDiaria > 0) {
+            mortesDiaria.push(sum - somaAnterior);
+          } else {
+            mortesDiaria.push(0);
+          }
+        }
+        somaAnterior = sum;
+      }
+    }
+
+    // VALIDAÇÃO
+    const sum = mortesDiaria.filter((valor: number) => valor > 0)
+      .reduce((sum: number, b: number) => sum + b, 0);
+
+    this.chartDiario.addSeries({
+      type: "line",
+      name: 'Brasil',
+      data: mortesDiaria
+    }, true, true);
 
     this.chartCrescimentoBrasil.addSeries({
       type: "line",

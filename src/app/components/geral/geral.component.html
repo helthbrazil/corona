@@ -10,5 +10,11 @@
 
 <mat-card class="mat-elevation-z8" style="margin: 20px; top: 20px">
     <mat-progress-bar *ngIf="mostrarLoading" mode="indeterminate"></mat-progress-bar>
+    <div [chart]="chartDiario"></div>
+</mat-card>
+
+
+<mat-card class="mat-elevation-z8" style="margin: 20px; top: 20px">
+    <mat-progress-bar *ngIf="mostrarLoading" mode="indeterminate"></mat-progress-bar>
     <div [chart]="chart"></div>
 </mat-card>

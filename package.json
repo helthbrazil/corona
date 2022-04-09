@@ -30,7 +30,7 @@
     "@types/highcharts": "^7.0.0",
     "angular-highcharts": "^9.0.11",
     "express": "^4.17.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "ngx-animations": "^4.0.0-beta.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",

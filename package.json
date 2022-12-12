@@ -29,7 +29,7 @@
     "@angular/router": "~9.0.3",
     "@types/highcharts": "^7.0.0",
     "angular-highcharts": "^9.0.11",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "moment": "^2.27.0",
     "ngx-animations": "^4.0.0-beta.1",
     "rxjs": "~6.5.4",
